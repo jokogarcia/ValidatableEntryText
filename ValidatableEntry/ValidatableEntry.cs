@@ -1,7 +1,7 @@
 
-using ValidatableEntryText;
+using ValidatableEntry;
 
-namespace ValidatableEntryText;
+namespace ValidatableEntry;
 
 public class ValidatableEntry : ContentView
 {

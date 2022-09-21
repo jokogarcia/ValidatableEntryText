@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ValidatableEntryText
+namespace ValidatableEntry
 {
     public class IsValidUrlRule : IValidationRule
     {

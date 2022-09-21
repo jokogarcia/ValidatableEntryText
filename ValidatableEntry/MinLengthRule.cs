@@ -1,5 +1,5 @@
 ﻿
-namespace ValidatableEntryText
+namespace ValidatableEntry
 {
     public class MinLengthRule : IValidationRule
     {

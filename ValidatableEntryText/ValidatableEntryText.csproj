@@ -49,6 +49,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="ar.com.irazu_ValidatableEntry" Version="1.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="Resources\AppRes.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>

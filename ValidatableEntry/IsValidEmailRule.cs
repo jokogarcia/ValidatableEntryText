@@ -1,4 +1,4 @@
-﻿namespace ValidatableEntryText
+﻿namespace ValidatableEntry
 {
     public class IsValidEmailRule : RegexRule
     {
