@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:Sample.Resources"
+              xmlns:cc="clr-namespace:ValidatableEntry;assembly=ar.com.irazu_ValidatableEntry"
+             x:Class="Sample.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Image
+                Source="dotnet_bot.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+
+            <cc:ValidatableEntry 
+                Placeholder="{x:Static res:AppRes.email_placeholder}">
+                <cc:ValidatableEntry.ValidationRules>
+                    <cc:IsValidEmailRule ErrorMessage="{x:Static res:AppRes.email_error}"/>
+                </cc:ValidatableEntry.ValidationRules>
+            </cc:ValidatableEntry>
+            <cc:ValidatableEntry 
+                Placeholder="{x:Static res:AppRes.password_placeholder}">
+                <cc:ValidatableEntry.ValidationRules>
+                    <cc:MinLengthRule MinLength="5" 
+                                      ErrorMessage="{x:Static res:AppRes.password_length_error}"
+                                      />
+                    <cc:RegexRule RegexRuleStr="[a-z]"
+                                  ErrorMessage="{x:Static res:AppRes.password_contains_lowercase_error}"
+                                  />
+                    <cc:RegexRule RegexRuleStr="[A-Z]"
+                                  ErrorMessage="{x:Static res:AppRes.password_contains_upercase_error}"
+                                  />
+                    <cc:RegexRule RegexRuleStr="[0-9]"
+                                  ErrorMessage="{x:Static res:AppRes.password_contains_digit_error}"
+                                  />
+                    <cc:RegexRule ErrorMessage="{x:Static res:AppRes.password_contains_symbol_error}"
+                                  >
+                        <cc:RegexRule.RegexRuleStr>[$-/:-?{-~!"^_`\[\]]</cc:RegexRule.RegexRuleStr>
+                    </cc:RegexRule>
+                </cc:ValidatableEntry.ValidationRules>
+            </cc:ValidatableEntry>
+
+            
+
+            <Button
+                x:Name="CounterBtn"
+                Text="{x:Static res:AppRes.login}"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
