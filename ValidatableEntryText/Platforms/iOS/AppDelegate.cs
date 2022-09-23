@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace ValidatableEntryText;
+namespace SampleMauiApp;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

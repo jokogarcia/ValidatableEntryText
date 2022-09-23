@@ -1,4 +1,4 @@
-﻿namespace ValidatableEntryText;
+﻿namespace SampleMauiApp;
 
 public partial class AppShell : Shell
 {

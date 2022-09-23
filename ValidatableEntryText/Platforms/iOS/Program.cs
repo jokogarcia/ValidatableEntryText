@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace ValidatableEntryText;
+namespace SampleMauiApp;
 
 public class Program
 {

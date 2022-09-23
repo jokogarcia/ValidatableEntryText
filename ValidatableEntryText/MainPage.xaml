@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cc="clr-namespace:ValidatableEntry;assembly=ar.com.irazu_ValidatableEntry"
-             xmlns:res="clr-namespace:ValidatableEntryText.Resources"
+             xmlns:res="clr-namespace:SampleMauiApp.Resources"
              x:Class="ValidatableEntryText.MainPage">
 
     <ScrollView>
@@ -25,6 +25,10 @@
                 HeightRequest="200"
                 HorizontalOptions="Center" >
                 <cc:ValidatableEntry.ValidationRules>
+                    <cc:MinLengthRule 
+                        ErrorMessage="{x:Static res:AppRes.PingCard_HostName}"
+                        MinLength="5"/>
+                    
                     <cc:IsValidEmailRule>
                         <cc:IsValidEmailRule.ErrorMessage>Must be a valid email!</cc:IsValidEmailRule.ErrorMessage>
                     </cc:IsValidEmailRule>

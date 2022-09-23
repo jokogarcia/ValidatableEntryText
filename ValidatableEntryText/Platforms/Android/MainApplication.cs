@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace ValidatableEntryText;
+namespace SampleMauiApp;
 
 [Application]
 public class MainApplication : MauiApplication
