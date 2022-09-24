@@ -49,7 +49,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="ar.com.irazu_ValidatableEntry" Version="1.0.1" />
+	  <ProjectReference Include="..\ValidatableEntry\ValidatableEntry.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

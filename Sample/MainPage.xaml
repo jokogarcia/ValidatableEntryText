@@ -18,12 +18,24 @@
                 HorizontalOptions="Center" />
 
             <cc:ValidatableEntry 
+                x:Name="EmailEntry"
+                PlaceholderTopErrorColor="Red"
+                PlaceholderTopNormalColor="Green"
+                ValidationMessageColor="Red"
+                ValidationMessgesFontSize="10"
                 Placeholder="{x:Static res:AppRes.email_placeholder}">
                 <cc:ValidatableEntry.ValidationRules>
                     <cc:IsValidEmailRule ErrorMessage="{x:Static res:AppRes.email_error}"/>
                 </cc:ValidatableEntry.ValidationRules>
             </cc:ValidatableEntry>
             <cc:ValidatableEntry 
+                x:Name="PasswordEntry"
+                PlaceholderTopErrorColor="Red"
+                PlaceholderTopNormalColor="Green"
+                ValidationMessageColor="Red"
+                ValidationMessgesFontSize="10"
+                IsPassword="True"
+                ValidateOnTextChanged="True"
                 Placeholder="{x:Static res:AppRes.password_placeholder}">
                 <cc:ValidatableEntry.ValidationRules>
                     <cc:MinLengthRule MinLength="5" 
@@ -40,19 +52,38 @@
                                   />
                     <cc:RegexRule ErrorMessage="{x:Static res:AppRes.password_contains_symbol_error}"
                                   >
-                        <cc:RegexRule.RegexRuleStr>[$-/:-?{-~!"^_`\[\]]</cc:RegexRule.RegexRuleStr>
+                        <cc:RegexRule.RegexRuleStr>[$-/:-?{-~#!"^_`\[\]]</cc:RegexRule.RegexRuleStr>
                     </cc:RegexRule>
                 </cc:ValidatableEntry.ValidationRules>
             </cc:ValidatableEntry>
 
-            
+
 
             <Button
                 x:Name="CounterBtn"
                 Text="{x:Static res:AppRes.login}"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
+                IsEnabled="False"
+                HorizontalOptions="Center" >
+                <Button.Triggers>
+                    <MultiTrigger TargetType="Button"
+                                 >
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Source={x:Reference EmailEntry},
+                                 Path=IsValid}"
+                                 Value="True">
+                            </BindingCondition>
+                            <BindingCondition Binding="{Binding Source={x:Reference PasswordEntry},
+                                 Path=IsValid}"
+                                 Value="True">
+                            </BindingCondition>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsEnabled" Value="True"/>
+                    </MultiTrigger>
+
+                </Button.Triggers>
+            </Button>
 
         </VerticalStackLayout>
     </ScrollView>

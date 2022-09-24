@@ -22,6 +22,6 @@ namespace ValidatableEntry
         private Regex _rule;
         private string regexRuleStr;
 
-        public bool Validate(string text) => _rule.IsMatch(text);
+        public bool Validate(string text) => _rule.IsMatch(text ?? string.Empty);
     }
 }
