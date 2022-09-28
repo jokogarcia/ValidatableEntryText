@@ -7,9 +7,9 @@ It's use is straightforward, and can be fully defined in XAML. This corresponds 
 [XAML]
 
 It is made up of the following parts:
- - The Entry itself
- - The Floating Placeholder (*PlaceholderTop*). It is only visible when the Entry is not empty.
- - The Validation Message: When a rule is not met, an Error Message will be displayed here. Only one message will be displayed at a time.
+ - The **Entry** itself
+ - The **FloatingPlaceholder**. It is only visible when the Entry is not empty.
+ - The **ValidationMessage**: When a rule is not met, an Error Message will be displayed here. Only one message will be displayed at a time.
  
 ## Validation Rules ##
 There are a few predefined validation rules, such as *MinLengthLRule*, *MaxLengthRule* or *IsValidEmailRule*. For broader cases, a *RegexRule* validation 
