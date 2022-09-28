@@ -1,12 +1,67 @@
 # ValidatableEntryText
 An Entry Control for .NET MAUI with added features, including a floating Placeholder and validation features.
 
-[Insert GIF here]
+![Animation displaying the control in action](./readme_image1.gif)
 
 It's use is straightforward, and can be fully defined in XAML. This corresponds to the above animation
-[XAML]
+```
+ <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+           [...]
+
+            <cc:ValidatableEntry 
+                x:Name="EmailEntry"
+                FloatingPlaceholderErrorColor="Red"
+                FloatingPlaceholderNormalColor="Green"
+                ValidationMessageColor="Red"
+                ValidationMessageFontSize="10"
+                Placeholder="{x:Static res:AppRes.email_placeholder}">
+                <cc:ValidatableEntry.ValidationRules>
+                    <cc:IsValidEmailRule ErrorMessage="{x:Static res:AppRes.email_error}"/>
+                </cc:ValidatableEntry.ValidationRules>
+            </cc:ValidatableEntry>
+            <cc:ValidatableEntry 
+                x:Name="PasswordEntry"
+                FloatingPlaceholderErrorColor="Red"
+                FloatingPlaceholderNormalColor="Green"
+                ValidationMessageColor="Red"
+                ValidationMessageFontSize="10"
+                IsPassword="True"
+                ValidateOnTextChanged="True"
+                Placeholder="{x:Static res:AppRes.password_placeholder}">
+                <cc:ValidatableEntry.ValidationRules>
+                    <cc:MinLengthRule MinLength="5" 
+                                      ErrorMessage="{x:Static res:AppRes.password_length_error}"
+                                      />
+                    <cc:RegexRule RegexRuleStr="[a-z]"
+                                  ErrorMessage="{x:Static res:AppRes.password_contains_lowercase_error}"
+                                  />
+                    <cc:RegexRule RegexRuleStr="[A-Z]"
+                                  ErrorMessage="{x:Static res:AppRes.password_contains_upercase_error}"
+                                  />
+                    <cc:RegexRule RegexRuleStr="[0-9]"
+                                  ErrorMessage="{x:Static res:AppRes.password_contains_digit_error}"
+                                  />
+                    <cc:RegexRule ErrorMessage="{x:Static res:AppRes.password_contains_symbol_error}"
+                                  >
+                        <cc:RegexRule.RegexRuleStr>[$-/:-?{-~#!"^_`\[\]]</cc:RegexRule.RegexRuleStr>
+                    </cc:RegexRule>
+                </cc:ValidatableEntry.ValidationRules>
+            </cc:ValidatableEntry>
+
+
+[...]
+
+        </VerticalStackLayout>
+```
 
 It is made up of the following parts:
+
+![The parts of the control](./readme_image2.png)
+
  - The **Entry** itself
  - The **FloatingPlaceholder**. It is only visible when the Entry is not empty.
  - The **ValidationMessage**: When a rule is not met, an Error Message will be displayed here. Only one message will be displayed at a time.
