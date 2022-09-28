@@ -7,53 +7,53 @@ namespace ValidatableEntry;
 public class ValidatableEntry : ContentView, INotifyPropertyChanged
 {
     public Entry Entry { get; set; }
-    public Label PlaceholderTop { get; set; }
-    public Label ValidationMessages { get; set; }
+    public Label FloatingPlaceholder { get; set; }
+    public Label validationMessage { get; set; }
     public string FontFamily
     {
         get => Entry.FontFamily;
         set
         {
             Entry.FontFamily = value;
-            PlaceholderTop.FontFamily = value;
-            ValidationMessages.FontFamily = value;
+            FloatingPlaceholder.FontFamily = value;
+            validationMessage.FontFamily = value;
         }
     }
 
-    public bool IsNeverValidated { get; set; } = true;
+    public bool IsNeverValidated { get; private set; } = true;
     public double FontSize { get => Entry.FontSize; set { Entry.FontSize = value; } }
     public Color PlaceholderInsideColor { get => Entry.PlaceholderColor; set => Entry.PlaceholderColor = value; }
 
-    //public string PlaceholderTopFontFamily { get => PlaceholderTop.FontFamily; set => PlaceholderTop.FontFamily = value; }
-    public double PlaceholderTopFontsize
+    //public string FloatingPlaceholderFontFamily { get => FloatingPlaceholder.FontFamily; set => FloatingPlaceholder.FontFamily = value; }
+    public double FloatingPlaceholderFontsize
     {
-        get => PlaceholderTop.FontSize; set => PlaceholderTop.FontSize = value;
+        get => FloatingPlaceholder.FontSize; set => FloatingPlaceholder.FontSize = value;
     }
-    public Color PlaceholderTopNormalColor
+    public Color FloatingPlaceholderNormalColor
     {
-        get => placeholderTopNormalColor; set
+        get => floatingPlaceholderNormalColor; set
         {
-            placeholderTopNormalColor = value;
-            if (IsValid || IsNeverValidated) PlaceholderTop.TextColor = placeholderTopNormalColor;
+            floatingPlaceholderNormalColor = value;
+            if (IsValid || IsNeverValidated) FloatingPlaceholder.TextColor = FloatingPlaceholderNormalColor;
         }
     }
-    public Color PlaceholderTopErrorColor
+    public Color FloatingPlaceholderErrorColor
     {
-        get => placeholderTopErrorColor; set
+        get => floatingPlaceholderErrorColor; set
         {
-            placeholderTopErrorColor = value;
-            if(!IsValid && !IsNeverValidated) PlaceholderTop.TextColor = placeholderTopErrorColor;
+            floatingPlaceholderErrorColor = value;
+            if(!IsValid && !IsNeverValidated) FloatingPlaceholder.TextColor = FloatingPlaceholderErrorColor;
         }
     }
     public Color ValidationMessageColor
     {
-        get => ValidationMessages.TextColor;
-        set => ValidationMessages.TextColor = value;
+        get => validationMessage.TextColor;
+        set => validationMessage.TextColor = value;
     }
-    public double ValidationMessgesFontSize
+    public double ValidationMessageFontSize
     {
-        get => ValidationMessages.FontSize;
-        set => ValidationMessages.FontSize = value;
+        get => validationMessage.FontSize;
+        set => validationMessage.FontSize = value;
     }
     public bool IsPassword
     {
@@ -66,8 +66,8 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
     public static BindableProperty PlaceholderProperty = BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(ValidatableEntry), string.Empty, propertyChanged: OnPlaceholderPropertyChanged);
     public static BindableProperty IsValidProperty = BindableProperty.Create(nameof(IsValid), typeof(bool), typeof(ValidatableEntry), false, propertyChanged: OnIsValidPropertyChanged);
     private bool isValid;
-    private Color placeholderTopNormalColor;
-    private Color placeholderTopErrorColor;
+    private Color floatingPlaceholderNormalColor;
+    private Color floatingPlaceholderErrorColor;
     #endregion
     #region BindableProperties_ChangeMethos
     private static void OnTextPropertyChanged(BindableObject bindable, object oldValue, object newValue)
@@ -96,10 +96,10 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
         set
         {
             Entry.Placeholder = value;
-            PlaceholderTop.Text = value;
+            FloatingPlaceholder.Text = value;
         }
     }
-    public String ValidationErrorMessage { get => ValidationMessages.Text; set => ValidationMessages.Text = value; }
+    public string ValidationErrorMessage { get => validationMessage.Text; set => validationMessage.Text = value; }
     public string Text
     {
         get => Entry.Text;
@@ -118,7 +118,7 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
                 OnValidationStateChanged(isValid);
                 NotifyPropertyChanged();
             };
-            PlaceholderTop.TextColor = isValid ? PlaceholderTopNormalColor : PlaceholderTopErrorColor;
+            FloatingPlaceholder.TextColor = isValid ? FloatingPlaceholderNormalColor : FloatingPlaceholderErrorColor;
         }
     }
     public bool ValidateOnTextChanged { get; set; } = false;
@@ -126,7 +126,7 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
     public event EventHandler<bool> ValidationStateChanged;
 
 
-    public void Validate()
+    public void RunValidations()
     {
         IsNeverValidated = false;
         ValidationErrorMessage = string.Empty;
@@ -159,22 +159,22 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
     private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
     {
 
-        PlaceholderTop.IsVisible = !string.IsNullOrEmpty(Entry?.Text);
+        FloatingPlaceholder.IsVisible = !string.IsNullOrEmpty(Entry?.Text);
 
         if (ValidateOnTextChanged && !IsNeverValidated)
-            Validate();
+            RunValidations();
 
     }
     public ValidatableEntry()
     {
 
-        PlaceholderTop = new Label();
-        PlaceholderTop.VerticalOptions = LayoutOptions.End;
-        PlaceholderTop.IsVisible = false;
-        PlaceholderTop.TextColor = PlaceholderTopNormalColor;
-        PlaceholderTop.FontSize = PlaceholderTopFontsize;
+        FloatingPlaceholder = new Label();
+        FloatingPlaceholder.VerticalOptions = LayoutOptions.End;
+        FloatingPlaceholder.IsVisible = false;
+        FloatingPlaceholder.TextColor = FloatingPlaceholderNormalColor;
+        FloatingPlaceholder.FontSize = FloatingPlaceholderFontsize;
 
-        ValidationMessages = new Label();
+        validationMessage = new Label();
 
 
         Entry = new Entry();
@@ -190,9 +190,9 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
                 new RowDefinition{ Height = new GridLength(1, GridUnitType.Star) },
             }
         };
-        MainGrid.Add(PlaceholderTop, 0, 0);
+        MainGrid.Add(FloatingPlaceholder, 0, 0);
         MainGrid.Add(Entry, 0, 1);
-        MainGrid.Add(ValidationMessages, 0, 2);
+        MainGrid.Add(validationMessage, 0, 2);
         Content = MainGrid;
 
     }
@@ -200,7 +200,7 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
     private void OnUnfocused(object sender, FocusEventArgs e)
     {
         if (ValidateOnFocusLost)
-            Validate();
+            RunValidations();
     }
     public event PropertyChangedEventHandler PropertyChanged;
     private void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")

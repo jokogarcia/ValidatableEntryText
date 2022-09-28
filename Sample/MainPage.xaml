@@ -19,10 +19,10 @@
 
             <cc:ValidatableEntry 
                 x:Name="EmailEntry"
-                PlaceholderTopErrorColor="Red"
-                PlaceholderTopNormalColor="Green"
+                FloatingPlaceholderErrorColor="Red"
+                FloatingPlaceholderNormalColor="Green"
                 ValidationMessageColor="Red"
-                ValidationMessgesFontSize="10"
+                ValidationMessageFontSize="10"
                 Placeholder="{x:Static res:AppRes.email_placeholder}">
                 <cc:ValidatableEntry.ValidationRules>
                     <cc:IsValidEmailRule ErrorMessage="{x:Static res:AppRes.email_error}"/>
@@ -30,10 +30,10 @@
             </cc:ValidatableEntry>
             <cc:ValidatableEntry 
                 x:Name="PasswordEntry"
-                PlaceholderTopErrorColor="Red"
-                PlaceholderTopNormalColor="Green"
+                FloatingPlaceholderErrorColor="Red"
+                FloatingPlaceholderNormalColor="Green"
                 ValidationMessageColor="Red"
-                ValidationMessgesFontSize="10"
+                ValidationMessageFontSize="10"
                 IsPassword="True"
                 ValidateOnTextChanged="True"
                 Placeholder="{x:Static res:AppRes.password_placeholder}">
