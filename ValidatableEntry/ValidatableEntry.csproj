@@ -21,7 +21,17 @@
 		<Authors>Joaquin Garcia</Authors>
 		<Description>An Entry Control with built in validation features, including validation rules and messages. And a floating placeholder</Description>
 		<Copyright>2022</Copyright>
-		<PackageProjectUrl>https://github.com/jokogarcia/PingWallMau</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/jokogarcia/ValidatableEntryText</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/jokogarcia/ValidatableEntryText</RepositoryUrl>
+		<PackageTags>MAUI, entry, validation, placeholder, floating placeholder</PackageTags>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
 </Project>
