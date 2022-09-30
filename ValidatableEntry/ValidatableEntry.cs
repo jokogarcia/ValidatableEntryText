@@ -87,7 +87,9 @@ public class ValidatableEntry : Grid
     }
     private static void OnIsValidPropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        return;//this is actually a readonly value
+        if (oldValue == newValue) return;
+        ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
+        ValidatableEntry.IsValid = (bool)newValue;
     }
     #endregion
 
