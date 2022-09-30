@@ -1,10 +1,11 @@
 
 using System.ComponentModel;
+using System.Xml.Linq;
 using ValidatableEntry;
 
 namespace ValidatableEntry;
 
-public class ValidatableEntry : ContentView, INotifyPropertyChanged
+public class ValidatableEntry : Grid
 {
     public Entry Entry { get; set; }
     public Label FloatingPlaceholder { get; set; }
@@ -116,7 +117,7 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
             {
                 isValid = value;
                 OnValidationStateChanged(isValid);
-                NotifyPropertyChanged();
+                OnPropertyChanged();
             };
             FloatingPlaceholder.TextColor = isValid ? FloatingPlaceholderNormalColor : FloatingPlaceholderErrorColor;
         }
@@ -180,34 +181,26 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
         Entry = new Entry();
         Entry.TextChanged += OnEntryTextChanged;
         Entry.Unfocused += OnUnfocused;
+        RowDefinitions = new RowDefinitionCollection{
+            new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+            };
 
 
-        Grid MainGrid = new Grid()
-        {
-            RowDefinitions = {
-                new RowDefinition{ Height = new GridLength(1, GridUnitType.Star) },
-                new RowDefinition{ Height = new GridLength(1, GridUnitType.Star) },
-                new RowDefinition{ Height = new GridLength(1, GridUnitType.Star) },
-            }
-        };
-        MainGrid.Add(FloatingPlaceholder, 0, 0);
-        MainGrid.Add(Entry, 0, 1);
-        MainGrid.Add(validationMessage, 0, 2);
-        Content = MainGrid;
+       
+        this.Add(FloatingPlaceholder, 0, 0);
+        this.Add(Entry, 0, 1);
+        this.Add(validationMessage, 0, 2);
+        
 
-    }
+}
 
     private void OnUnfocused(object sender, FocusEventArgs e)
     {
         if (ValidateOnFocusLost)
             RunValidations();
     }
-    public event PropertyChangedEventHandler PropertyChanged;
-    private void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
-    {
-        if (PropertyChanged != null)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
+   
+    
 }
