@@ -1,10 +1,11 @@
 
 using System.ComponentModel;
+using System.Xml.Linq;
 using ValidatableEntry;
 
 namespace ValidatableEntry;
 
-public class ValidatableEntry : ContentView, INotifyPropertyChanged
+public class ValidatableEntry : Grid
 {
     public Entry Entry { get; set; }
     public Label FloatingPlaceholder { get; set; }
@@ -64,10 +65,10 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
     #region BindableProperties
     public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(ValidatableEntry), string.Empty, propertyChanged: OnTextPropertyChanged);
     public static BindableProperty PlaceholderProperty = BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(ValidatableEntry), string.Empty, propertyChanged: OnPlaceholderPropertyChanged);
-    public static BindableProperty IsValidProperty = BindableProperty.Create(nameof(IsValid), typeof(bool), typeof(ValidatableEntry), false, propertyChanged: OnIsValidPropertyChanged);
-    private bool isValid;
+    public static BindableProperty IsValidProperty = BindableProperty.Create(nameof(IsValid), typeof(bool), typeof(ValidatableEntry), false);
     private Color floatingPlaceholderNormalColor;
     private Color floatingPlaceholderErrorColor;
+    private Command<bool> _validationChangedCommand;
     #endregion
     #region BindableProperties_ChangeMethos
     private static void OnTextPropertyChanged(BindableObject bindable, object oldValue, object newValue)
@@ -86,7 +87,39 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
     }
     private static void OnIsValidPropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        return;//this is actually a readonly value
+        if (oldValue == newValue) return;
+        ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
+        ValidatableEntry.IsValid = (bool)newValue;
+    }
+    public static readonly BindableProperty ValidationChangedCommandProperty = BindableProperty.Create(
+        nameof(ValidationChangedCommand),
+        typeof(Command<bool>),
+        typeof(ValidatableEntry),
+        null,
+        propertyChanged : OnValidationChangedCommandChanged
+        );
+    public Command<bool> ValidationChangedCommand
+    {
+        get => _validationChangedCommand;
+        set => _validationChangedCommand = value;
+    }
+    private static void OnValidationChangedCommandChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (newValue == oldValue)
+            return;
+        ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
+        try
+        {
+            Command<bool> newCommand = (Command<bool>)newValue;
+            ValidatableEntry.ValidationChangedCommand = newCommand;
+        }
+        catch (InvalidCastException ex)
+        {
+            throw new InvalidCastException("This command needs to be of type Command<bool>", ex);
+        }
+
+
+
     }
     #endregion
 
@@ -107,20 +140,29 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
     }
 
     public List<IValidationRule> ValidationRules { get; set; } = new();
+    private bool previousIsValidValue;
     public bool IsValid
     {
-        get => isValid;
+        get =>(bool)GetValue(IsValidProperty);
         set
         {
-            if (isValid != value)
-            {
-                isValid = value;
-                OnValidationStateChanged(isValid);
-                NotifyPropertyChanged();
-            };
-            FloatingPlaceholder.TextColor = isValid ? FloatingPlaceholderNormalColor : FloatingPlaceholderErrorColor;
+            SetValue(IsValidProperty, value);
+            IsValidChanged();
         }
     }
+
+    private void IsValidChanged()
+    {
+        var isValid = IsValid;
+        if(isValid != previousIsValidValue)
+        {
+            OnValidationStateChanged(isValid);
+            OnPropertyChanged();
+            FloatingPlaceholder.TextColor = isValid ? FloatingPlaceholderNormalColor : FloatingPlaceholderErrorColor;
+        }
+        previousIsValidValue = isValid;
+    }
+
     public bool ValidateOnTextChanged { get; set; } = false;
     public bool ValidateOnFocusLost { get; set; } = true;
     public event EventHandler<bool> ValidationStateChanged;
@@ -146,6 +188,7 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
     }
     private void OnValidationStateChanged(bool isValid)
     {
+        ValidationChangedCommand?.Execute(isValid);
         // Make a temporary copy of the event to avoid possibility of
         // a race condition if the last subscriber unsubscribes
         // immediately after the null check and before the event is raised.
@@ -180,34 +223,26 @@ public class ValidatableEntry : ContentView, INotifyPropertyChanged
         Entry = new Entry();
         Entry.TextChanged += OnEntryTextChanged;
         Entry.Unfocused += OnUnfocused;
+        RowDefinitions = new RowDefinitionCollection{
+            new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+            };
 
 
-        Grid MainGrid = new Grid()
-        {
-            RowDefinitions = {
-                new RowDefinition{ Height = new GridLength(1, GridUnitType.Star) },
-                new RowDefinition{ Height = new GridLength(1, GridUnitType.Star) },
-                new RowDefinition{ Height = new GridLength(1, GridUnitType.Star) },
-            }
-        };
-        MainGrid.Add(FloatingPlaceholder, 0, 0);
-        MainGrid.Add(Entry, 0, 1);
-        MainGrid.Add(validationMessage, 0, 2);
-        Content = MainGrid;
+       
+        this.Add(FloatingPlaceholder, 0, 0);
+        this.Add(Entry, 0, 1);
+        this.Add(validationMessage, 0, 2);
+        
 
-    }
+}
 
     private void OnUnfocused(object sender, FocusEventArgs e)
     {
         if (ValidateOnFocusLost)
             RunValidations();
     }
-    public event PropertyChangedEventHandler PropertyChanged;
-    private void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
-    {
-        if (PropertyChanged != null)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
+   
+    
 }
