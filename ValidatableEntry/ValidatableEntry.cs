@@ -129,7 +129,6 @@ public class ValidatableEntry : Grid
         set
         {
             Entry.Placeholder = value;
-            FloatingPlaceholder.Text = value;
         }
     }
     public string ValidationErrorMessage { get => validationMessage.Text; set => validationMessage.Text = value; }
@@ -202,7 +201,10 @@ public class ValidatableEntry : Grid
     private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
     {
 
-        FloatingPlaceholder.IsVisible = !string.IsNullOrEmpty(Entry?.Text);
+        FloatingPlaceholder.Text = 
+            string.IsNullOrEmpty(Entry?.Text) 
+                ? string.Empty 
+                : this.Placeholder;
 
         if (ValidateOnTextChanged && !IsNeverValidated)
             RunValidations();
@@ -213,7 +215,6 @@ public class ValidatableEntry : Grid
 
         FloatingPlaceholder = new Label();
         FloatingPlaceholder.VerticalOptions = LayoutOptions.End;
-        FloatingPlaceholder.IsVisible = false;
         FloatingPlaceholder.TextColor = FloatingPlaceholderNormalColor;
         FloatingPlaceholder.FontSize = FloatingPlaceholderFontsize;
 
