@@ -4,7 +4,24 @@
              xmlns:res="clr-namespace:Sample.Resources"
               xmlns:cc="clr-namespace:ValidatableEntry;assembly=ar.com.irazu_ValidatableEntry"
              x:Class="Sample.MainPage">
-
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="cc:ValidatableEntry">
+                <Setter Property="FloatingPlaceholderErrorColor"
+                        Value="Red"/>
+                <Setter Property="FloatingPlaceholderNormalColor"
+                        Value="Green"/>
+                <Setter Property="ValidationMessageColor"
+                        Value="DeepPink"/>
+                <Setter Property="ValidationMessageFontSize"
+                        Value="8"/>
+                <Setter Property="FontSize"
+                        Value="14"/>
+                <Setter Property="FloatingPlaceholderFontsize"
+                        Value="22"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout
             Spacing="25"
@@ -19,10 +36,7 @@
 
             <cc:ValidatableEntry 
                 x:Name="EmailEntry"
-                FloatingPlaceholderErrorColor="Red"
-                FloatingPlaceholderNormalColor="Green"
-                ValidationMessageColor="Red"
-                ValidationMessageFontSize="10"
+               
                 Placeholder="{x:Static res:AppRes.email_placeholder}">
                 <cc:ValidatableEntry.ValidationRules>
                     <cc:IsValidEmailRule ErrorMessage="{x:Static res:AppRes.email_error}"/>
@@ -30,10 +44,7 @@
             </cc:ValidatableEntry>
             <cc:ValidatableEntry 
                 x:Name="PasswordEntry"
-                FloatingPlaceholderErrorColor="Red"
-                FloatingPlaceholderNormalColor="Green"
-                ValidationMessageColor="Red"
-                ValidationMessageFontSize="10"
+               
                 IsPassword="True"
                 ValidateOnTextChanged="True"
                 Placeholder="{x:Static res:AppRes.password_placeholder}">
