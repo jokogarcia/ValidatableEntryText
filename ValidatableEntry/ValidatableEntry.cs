@@ -31,7 +31,11 @@ public class ValidatableEntry : Grid
     ***************************************************************************************/
     public string Text
     {
-        get => Entry.Text;
+        get
+        {
+            Text = Entry.Text;
+            return (string)GetValue(TextProperty);
+        } 
         set => SetValue(TextProperty, value);
     }
     public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text),
@@ -44,7 +48,7 @@ public class ValidatableEntry : Grid
         if (oldValue == newValue) return;
         string newString = newValue as string ?? string.Empty;
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
-        if (ValidatableEntry?.Text == null)
+        if (ValidatableEntry?.Entry == null)
             return;
         ValidatableEntry.Entry.Text = newString;
         if (ValidatableEntry.ValidateOnTextChanged)
