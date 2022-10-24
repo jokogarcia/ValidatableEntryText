@@ -84,19 +84,19 @@ public class ValidatableEntry : Grid
         }
     }
     /**************************************************************************************
-    *************   ValidationErrorMessage ************************************************
+    *************   ValidationMessage *****************************************************
     ***************************************************************************************/
-    public string ValidationErrorMessage { 
-        get => (string)GetValue(ValidationErrorMessageProperty);
-        set => SetValue(ValidationErrorMessageProperty, value);
+    public string ValidationMessage { 
+        get => (string)GetValue(ValidationMessageProperty);
+        set => SetValue(ValidationMessageProperty, value);
     }
-    public static BindableProperty ValidationErrorMessageProperty = BindableProperty.Create(
-        nameof(ValidationErrorMessage),
+    public static BindableProperty ValidationMessageProperty = BindableProperty.Create(
+        nameof(ValidationMessage),
         typeof(string),
         typeof(ValidatableEntry),
         string.Empty,
-        propertyChanged: OnValidationErrorMessagePropertyChanged);
-    private static void OnValidationErrorMessagePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        propertyChanged: OnValidationMessagePropertyChanged);
+    private static void OnValidationMessagePropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (oldValue == newValue) return;
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
@@ -400,7 +400,7 @@ public class ValidatableEntry : Grid
     public void RunValidations()
     {
         IsNeverValidated = false;
-        ValidationErrorMessage = string.Empty;
+        ValidationMessage = string.Empty;
         IsValid = true;
         if (ValidationRules is null || ValidationRules.Count == 0)
             return;
@@ -409,7 +409,7 @@ public class ValidatableEntry : Grid
             if (!item.Validate(Text))
             {
                 IsValid = false;
-                ValidationErrorMessage = item.ErrorMessage;
+                ValidationMessage = item.ErrorMessage;
                 return;
             }
         }
