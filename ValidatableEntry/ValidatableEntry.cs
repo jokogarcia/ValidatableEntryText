@@ -26,6 +26,9 @@ public class ValidatableEntry : Grid
     }
 
     #region BindableProperties
+    /**************************************************************************************
+    *************   TextProperty ****************************************
+    ***************************************************************************************/
     public string Text
     {
         get => Entry.Text;
@@ -41,6 +44,8 @@ public class ValidatableEntry : Grid
         if (oldValue == newValue) return;
         string newString = newValue as string ?? string.Empty;
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
+        if (ValidatableEntry?.Text == null)
+            return;
         ValidatableEntry.Entry.Text = newString;
         if (ValidatableEntry.ValidateOnTextChanged)
         {
@@ -48,20 +53,72 @@ public class ValidatableEntry : Grid
         }
 
     }
-    public static BindableProperty PlaceholderProperty = BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(ValidatableEntry), string.Empty, propertyChanged: OnPlaceholderPropertyChanged);
-    public static BindableProperty IsValidProperty = BindableProperty.Create(nameof(IsValid), typeof(bool), typeof(ValidatableEntry), false);
-    private Command<bool> _validationChangedCommand;
-    #endregion
-    #region BindableProperties_ChangeMethos
-
-
+    /**************************************************************************************
+    *************   PlaceholderProperty ****************************************
+    ***************************************************************************************/
+    public string Placeholder
+    {
+        get => (string)GetValue(PlaceholderProperty);
+        set
+        {
+            SetValue(PlaceholderProperty, value);
+        }
+    }
+    public static BindableProperty PlaceholderProperty = BindableProperty.Create(nameof(Placeholder),
+        typeof(string),
+        typeof(ValidatableEntry),
+        string.Empty,
+        propertyChanged: OnPlaceholderPropertyChanged);
     private static void OnPlaceholderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (oldValue == newValue) return;
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
-        ValidatableEntry.Placeholder = newValue.ToString();
+        if (ValidatableEntry?.Entry != null)
+            ValidatableEntry.Entry.Placeholder = newValue.ToString();
+        if(ValidatableEntry?.FloatingPlaceholder != null)
+        {
+            ValidatableEntry.FloatingPlaceholder.Text = 
+                string.IsNullOrEmpty(ValidatableEntry?.Entry?.Text) 
+                ? string.Empty 
+                : newValue.ToString();
+        }
+    }
+    /**************************************************************************************
+    *************   ValidationErrorMessage ************************************************
+    ***************************************************************************************/
+    public string ValidationErrorMessage { 
+        get => (string)GetValue(ValidationErrorMessageProperty);
+        set => SetValue(ValidationErrorMessageProperty, value);
+    }
+    public static BindableProperty ValidationErrorMessageProperty = BindableProperty.Create(
+        nameof(ValidationErrorMessage),
+        typeof(string),
+        typeof(ValidatableEntry),
+        string.Empty,
+        propertyChanged: OnValidationErrorMessagePropertyChanged);
+    private static void OnValidationErrorMessagePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (oldValue == newValue) return;
+        ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
+        if (ValidatableEntry?.ValidationMessageLabel != null)
+            ValidatableEntry.ValidationMessageLabel.Text = newValue.ToString();
     }
 
+    /**************************************************************************************
+    *************   IsValid ***************************************************************
+    ***************************************************************************************/
+    public bool IsValid
+    {
+        get => (bool)GetValue(IsValidProperty);
+        set
+        {
+            SetValue(IsValidProperty, value);
+            IsValidChanged();
+        }
+    }
+    public static BindableProperty IsValidProperty = BindableProperty.Create(nameof(IsValid), typeof(bool), typeof(ValidatableEntry), false);
+    
+    
 
     /**************************************************************************************
     *************   ValidationMessageColorProperty ****************************************
@@ -84,6 +141,8 @@ public class ValidatableEntry : Grid
         if (newValue == oldValue)
             return;
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
+        if (ValidatableEntry?.ValidationMessageLabel == null)
+            return;
         ValidatableEntry.ValidationMessageLabel.TextColor = (Color)newValue;
     }
 
@@ -108,9 +167,16 @@ public class ValidatableEntry : Grid
         if (newValue == oldValue)
             return;
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
-        ValidatableEntry.Entry.FontFamily = (string)newValue;
-        ValidatableEntry.FloatingPlaceholder.FontFamily = (string)newValue;
-        ValidatableEntry.ValidationMessageLabel.FontFamily = (string)newValue;
+        if(ValidatableEntry != null)
+        {
+            if (ValidatableEntry.Entry != null)
+                ValidatableEntry.Entry.FontFamily = (string)newValue;
+            if (ValidatableEntry.FloatingPlaceholder != null) 
+                ValidatableEntry.FloatingPlaceholder.FontFamily = (string)newValue;
+            if (ValidatableEntry.ValidationMessageLabel != null) 
+                ValidatableEntry.ValidationMessageLabel.FontFamily = (string)newValue;
+        }
+        
     }
     /**************************************************************************************
     *************   FloatingPlaceholderNormalColorProperty ********************************
@@ -180,6 +246,8 @@ public class ValidatableEntry : Grid
         if (newValue == oldValue)
             return;
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
+        if (ValidatableEntry?.Entry == null) 
+            return;
         ValidatableEntry.Entry.FontSize = (double)newValue;
     }
     /**************************************************************************************
@@ -203,6 +271,8 @@ public class ValidatableEntry : Grid
         if (newValue == oldValue)
             return;
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
+        if (ValidatableEntry?.Entry == null)
+            return;
         ValidatableEntry.Entry.PlaceholderColor = (Color)newValue;
     }
     /**************************************************************************************
@@ -226,6 +296,8 @@ public class ValidatableEntry : Grid
         if (newValue == oldValue)
             return;
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
+        if (ValidatableEntry?.FloatingPlaceholder == null)
+            return;
         ValidatableEntry.FloatingPlaceholder.FontSize = (double)newValue;
     }
 
@@ -246,7 +318,9 @@ public class ValidatableEntry : Grid
         if (newValue == oldValue)
             return;
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
-        ValidatableEntry.ValidationMessageFontSize = (double)newValue;
+        if (ValidatableEntry?.ValidationMessageLabel == null)
+            return;
+        ValidatableEntry.ValidationMessageLabel.FontSize = (double)newValue;
     }
     public static readonly BindableProperty ValidationChangedCommandProperty = BindableProperty.Create(
         nameof(ValidationChangedCommand),
@@ -255,6 +329,7 @@ public class ValidatableEntry : Grid
         null,
         propertyChanged: OnValidationChangedCommandChanged
         );
+    private Command<bool> _validationChangedCommand;
     public Command<bool> ValidationChangedCommand
     {
         get => _validationChangedCommand;
@@ -280,30 +355,15 @@ public class ValidatableEntry : Grid
     }
     #endregion
 
-    public string Placeholder
-    {
-        get => Entry.Placeholder;
-        set
-        {
-            Entry.Placeholder = value;
-        }
-    }
-    public string ValidationErrorMessage { get => ValidationMessageLabel.Text; set => ValidationMessageLabel.Text = value; }
+    
+    
 
 
     public List<IValidationRule> ValidationRules { get; set; } = new();
     private bool previousIsValidValue;
     private bool validateOnFocusLost = true;
 
-    public bool IsValid
-    {
-        get => (bool)GetValue(IsValidProperty);
-        set
-        {
-            SetValue(IsValidProperty, value);
-            IsValidChanged();
-        }
-    }
+    
 
     private void IsValidChanged()
     {
@@ -410,6 +470,8 @@ public class ValidatableEntry : Grid
     }
     public static void EvaluateFloatingPlaceholderColor(ValidatableEntry e)
     {
+        if (e?.FloatingPlaceholder == null)
+            return;
         e.FloatingPlaceholder.TextColor =
             e.IsValid || e.IsNeverValidated ? e.FloatingPlaceholderNormalColor
             : e.FloatingPlaceholderErrorColor;
