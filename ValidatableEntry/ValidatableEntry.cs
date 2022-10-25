@@ -4,7 +4,12 @@ using System.Xml.Linq;
 using ValidatableEntry;
 
 namespace ValidatableEntry;
-
+/*
+ TODO:
+ Default Value + Default Value string template
+ Expose Keyboard Property
+ AllowOnlyNumeric Property
+ */
 public class ValidatableEntry : Grid
 {
     public Entry Entry { get; set; }
