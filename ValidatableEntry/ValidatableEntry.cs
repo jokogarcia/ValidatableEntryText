@@ -1,4 +1,5 @@
 
+using Microsoft.Maui.Controls;
 using System.ComponentModel;
 using System.Xml.Linq;
 using ValidatableEntry;
@@ -15,7 +16,6 @@ public class ValidatableEntry : Grid
     public Entry Entry { get; set; }
     public Label FloatingPlaceholder { get; set; }
     public Label ValidationMessageLabel { get; set; }
-
 
     public bool IsNeverValidated { get; private set; } = true;
 
@@ -112,10 +112,27 @@ public class ValidatableEntry : Grid
         if (ValidatableEntry?.ValidationMessageLabel != null)
             ValidatableEntry.ValidationMessageLabel.Text = newValue.ToString();
     }
+    // Keyboard Property
+    public Keyboard Keyboard { get=>(Keyboard)GetValue(KeyboardProperty); set=>SetValue(KeyboardProperty,value); }
+    public static BindableProperty KeyboardProperty = BindableProperty.Create(
+        nameof(Keyboard),
+        typeof(Keyboard),
+        typeof(ValidatableEntry),
+        Keyboard.Plain,
+        propertyChanged:OnKeyboardPropertyChanged
+        );
 
-    /**************************************************************************************
-    *************   IsValid ***************************************************************
-    ***************************************************************************************/
+    private static void OnKeyboardPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (oldValue == newValue) return;
+        ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
+        if (ValidatableEntry?.Entry != null)
+            ValidatableEntry.Entry.Keyboard = (Keyboard)newValue;
+    }
+
+/**************************************************************************************
+*************   IsValid ***************************************************************
+***************************************************************************************/
     public bool IsValid
     {
         get => (bool)GetValue(IsValidProperty);
@@ -362,10 +379,19 @@ public class ValidatableEntry : Grid
 
 
     }
+    public string AllowedCharactersSet { 
+        get => (string)GetValue(AllowedCharactersSetProperty);
+        set => SetValue(AllowedCharactersSetProperty, value);
+    }
+    public static BindableProperty AllowedCharactersSetProperty = BindableProperty.Create(
+        nameof(AllowedCharactersSet),
+        typeof(string),
+        typeof(ValidatableEntry)
+        );
     #endregion
 
-    
-    
+
+
 
 
     public List<IValidationRule> ValidationRules { get; set; } = new();
@@ -436,22 +462,33 @@ public class ValidatableEntry : Grid
             e(this, isValid);
         }
     }
+    private void OnEntryTextChanging(object sender, TextChangedEventArgs e)
+    {
+
+    }
 
     private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
     {
-
+        if (!string.IsNullOrEmpty(AllowedCharactersSet))
+        {
+            foreach(char c in e.NewTextValue ?? string.Empty)
+            {
+                if (!AllowedCharactersSet.Contains(c))
+                {
+                    ((Entry)sender).Text = e.OldTextValue;
+                    return;
+                }
+            }
+        }
         FloatingPlaceholder.Text =
-            string.IsNullOrEmpty(Entry?.Text)
+            string.IsNullOrEmpty(e.NewTextValue)
                 ? string.Empty
                 : this.Placeholder;
-
         if (ValidateOnTextChanged && !IsNeverValidated)
             RunValidations();
-
     }
     public ValidatableEntry()
     {
-
         FloatingPlaceholder = new Label();
         FloatingPlaceholder.VerticalOptions = LayoutOptions.End;
         FloatingPlaceholder.TextColor = FloatingPlaceholderNormalColor;
