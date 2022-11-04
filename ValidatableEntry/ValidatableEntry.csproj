@@ -16,7 +16,7 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<Title>Validatable Entry</Title>
-		<AssemblyName>ar.com.irazu_$(MSBuildProjectName)</AssemblyName>
+		<AssemblyName>irazu.com.ar_$(MSBuildProjectName)</AssemblyName>
 		<Version>1.10.0</Version>
 		<Authors>Joaquin Garcia</Authors>
 		<Description>An Entry Control with built in validation features, including validation rules and messages. And a floating placeholder</Description>
@@ -25,9 +25,16 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/jokogarcia/ValidatableEntryText</RepositoryUrl>
 		<PackageTags>MAUI, entry, validation, placeholder, floating placeholder</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageIcon>irazu_logo.png</PackageIcon>
+		<PackageReleaseNotes>First Public release.</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Include="..\irazu_logo.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	  <None Include="..\README.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>

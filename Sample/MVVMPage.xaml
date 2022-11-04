@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:cc="clr-namespace:ValidatableEntry;assembly=ar.com.irazu_ValidatableEntry"
+             xmlns:cc="clr-namespace:ValidatableEntry;assembly=irazu.com.ar_ValidatableEntry"
              xmlns:viewmodel="clr-namespace:Sample.ViewModel"
              x:DataType="viewmodel:MVVMPageViewModel"
              x:Class="Sample.MVVMPage"
