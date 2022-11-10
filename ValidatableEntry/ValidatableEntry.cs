@@ -47,7 +47,9 @@ public class ValidatableEntry : Grid
         typeof(string),
         typeof(ValidatableEntry),
         string.Empty,
-        propertyChanged: OnTextPropertyChanged);
+        propertyChanged: OnTextPropertyChanged,
+        defaultBindingMode: BindingMode.TwoWay
+        );
     private static void OnTextPropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (oldValue == newValue) return;
