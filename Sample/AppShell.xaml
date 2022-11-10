@@ -5,16 +5,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Sample"
     Shell.FlyoutBehavior="Disabled">
-   
-   
-    <ShellContent
-        Title="MVVM Page"
-        ContentTemplate="{DataTemplate local:MVVMPage}"
-        Route="MVVMPage" />
+
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+    <ShellContent
+        Title="MVVM Page"
+        ContentTemplate="{DataTemplate local:MVVMPage}"
+        Route="MVVMPage" />
+    
 
 
 </Shell>
