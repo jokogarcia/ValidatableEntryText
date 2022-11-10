@@ -511,6 +511,9 @@ public class ValidatableEntry : Grid
         this.Add(FloatingPlaceholder, 0, 0);
         this.Add(Entry, 0, 1);
         this.Add(ValidationMessageLabel, 0, 2);
+        // This is to prevent a bug that causes the TextProperty not to update
+        // when no ValidationRule is defined
+        this.ValidationRules.Add(new AlwaysPassRule());
 
 
     }

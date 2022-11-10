@@ -36,8 +36,6 @@
 
             <cc:ValidatableEntry 
                 x:Name="EmailEntry"
-               Keyboard="Numeric"
-                AllowedCharactersSet="0123456789"
                 Placeholder="{x:Static res:AppRes.email_placeholder}">
                 <cc:ValidatableEntry.ValidationRules>
                     <cc:IsValidEmailRule ErrorMessage="{x:Static res:AppRes.email_error}"/>
