@@ -55,7 +55,7 @@ namespace Sample.ViewModel
 
         private void Button_Command_Execute(object obj)
         {
-            LabelText = "Button pressed";
+            LabelText = URL;
         }
 
         private void URL_ValidationChangedCommand_Execute(bool isValid)
