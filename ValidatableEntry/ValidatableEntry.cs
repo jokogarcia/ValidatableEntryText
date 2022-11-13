@@ -5,14 +5,21 @@ public class ValidatableEntry : Grid
     Entry Entry { get; set; }
     Label FloatingPlaceholder { get; set; }
     Label ValidationMessageLabel { get; set; }
-
+    /// <summary>
+    /// Is true only if validations were never run.
+    /// </summary>
     public bool IsNeverValidated { get; private set; } = true;
-
+    /// <summary>
+    /// Font Size of the Validation Message
+    /// </summary>
     public double ValidationMessageFontSize
     {
         get => (double)GetValue(ValidationMessageColorProperty);
         set => SetValue(ValidationMessageColorProperty, value);
     }
+    /// <summary>
+    /// If true, the input characters are masked.
+    /// </summary>
     public bool IsPassword
     {
         get => Entry.IsPassword;
@@ -20,9 +27,9 @@ public class ValidatableEntry : Grid
     }
 
     #region BindableProperties
-    /**************************************************************************************
-    *************   TextProperty ****************************************
-    ***************************************************************************************/
+    /// <summary>
+    /// The content of the Entry
+    /// </summary>
     public string Text
     {
         get
@@ -32,6 +39,9 @@ public class ValidatableEntry : Grid
         } 
         set => SetValue(TextProperty, value);
     }
+    /// <summary>
+    /// Bindable property associated with the Text Property
+    /// </summary>
     public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text),
         typeof(string),
         typeof(ValidatableEntry),
@@ -53,9 +63,10 @@ public class ValidatableEntry : Grid
         }
 
     }
-    /**************************************************************************************
-    *************   PlaceholderProperty ****************************************
-    ***************************************************************************************/
+    /// <summary>
+    /// Will be displayed inside the Entry when no text has been entered, and on top of it
+    /// after that.
+    /// </summary>
     public string Placeholder
     {
         get => (string)GetValue(PlaceholderProperty);
@@ -64,6 +75,9 @@ public class ValidatableEntry : Grid
             SetValue(PlaceholderProperty, value);
         }
     }
+    /// <summary>
+    /// Bindable property associated with the Placeholder Property
+    /// </summary>
     public static BindableProperty PlaceholderProperty = BindableProperty.Create(nameof(Placeholder),
         typeof(string),
         typeof(ValidatableEntry),
@@ -103,7 +117,10 @@ public class ValidatableEntry : Grid
         if (ValidatableEntry?.ValidationMessageLabel != null)
             ValidatableEntry.ValidationMessageLabel.Text = newValue.ToString();
     }
-    // Keyboard Property
+    /// <summary>
+    /// Use this parameter to change type of keyboard displayed on 
+    /// touch devices
+    /// </summary>
     public Keyboard Keyboard { get=>(Keyboard)GetValue(KeyboardProperty); set=>SetValue(KeyboardProperty,value); }
     public static BindableProperty KeyboardProperty = BindableProperty.Create(
         nameof(Keyboard),
@@ -121,9 +138,10 @@ public class ValidatableEntry : Grid
             ValidatableEntry.Entry.Keyboard = (Keyboard)newValue;
     }
 
-/**************************************************************************************
-*************   IsValid ***************************************************************
-***************************************************************************************/
+/// <summary>
+/// Is true if the text entered on the Entry has been validated, and the validations are
+/// satisfactory
+/// </summary>
     public bool IsValid
     {
         get => (bool)GetValue(IsValidProperty);
@@ -137,9 +155,9 @@ public class ValidatableEntry : Grid
     
     
 
-    /**************************************************************************************
-    *************   ValidationMessageColorProperty ****************************************
-    ***************************************************************************************/
+/// <summary>
+/// Text Color of the Validation Message
+/// </summary>
     public Color ValidationMessageColor
     {
         get => (Color)GetValue(ValidationMessageColorProperty);
@@ -163,9 +181,9 @@ public class ValidatableEntry : Grid
         ValidatableEntry.ValidationMessageLabel.TextColor = (Color)newValue;
     }
 
-    /**************************************************************************************
-    *************   FontFamilyPropertyProperty ********************************************
-    ***************************************************************************************/
+/// <summary>
+/// FontFamily of the Entry and also for the Placeholder and ValidationMessages
+/// </summary>
     public string FontFamily
     {
         get => (string)GetValue(FontFamilyProperty);
@@ -195,10 +213,9 @@ public class ValidatableEntry : Grid
         }
         
     }
-    /**************************************************************************************
-    *************   FloatingPlaceholderNormalColorProperty ********************************
-    ***************************************************************************************/
-
+/// <summary>
+/// Text Color of the FloatingPlaceholder when the validations are succesfull (or have never been run)
+/// </summary>
     public Color FloatingPlaceholderNormalColor
     {
         get => (Color)GetValue(FloatingPlaceholderNormalColorProperty);
@@ -219,9 +236,9 @@ public class ValidatableEntry : Grid
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
         EvaluateFloatingPlaceholderColor(ValidatableEntry);
     }
-    /**************************************************************************************
-    *************   FloatingPlaceholderErrorColorProperty *********************************
-    ***************************************************************************************/
+    /// <summary>
+    /// Text Color of the FloatingPlaceholder when the validations fail.
+    /// </summary>
     public Color FloatingPlaceholderErrorColor
     {
         get => (Color)GetValue(FloatingPlaceholderErrorColorProperty);
@@ -242,9 +259,9 @@ public class ValidatableEntry : Grid
         ValidatableEntry ValidatableEntry = bindable as ValidatableEntry;
         EvaluateFloatingPlaceholderColor(ValidatableEntry);
     }
-    /**************************************************************************************
-    *************   FontSizeProperty ******************************************************
-    ***************************************************************************************/
+/// <summary>
+/// Font Size for the Entry.
+/// </summary>
     public double FontSize
     {
         get => (double)GetValue(FontSizeProperty);
@@ -267,9 +284,9 @@ public class ValidatableEntry : Grid
             return;
         ValidatableEntry.Entry.FontSize = (double)newValue;
     }
-    /**************************************************************************************
-    *************   PlaceholderInsideColorProperty ****************************************
-    ***************************************************************************************/
+/// <summary>
+/// Font Color of the Placeholder text when it is shown inside the Entry.
+/// </summary>
     public Color PlaceholderInsideColor
     {
         get => (Color)GetValue(PlaceholderInsideColorProperty);
@@ -292,9 +309,9 @@ public class ValidatableEntry : Grid
             return;
         ValidatableEntry.Entry.PlaceholderColor = (Color)newValue;
     }
-    /**************************************************************************************
-    *************   FloatingPlaceholderFontsizeProperty ***********************************
-    ***************************************************************************************/
+/// <summary>
+/// Font size of the Placeholder text when it is shown over the Entry
+/// </summary>
     public double FloatingPlaceholderFontsize
     {
         get => (double)GetValue(FloatingPlaceholderFontsizeProperty);
@@ -318,9 +335,9 @@ public class ValidatableEntry : Grid
         ValidatableEntry.FloatingPlaceholder.FontSize = (double)newValue;
     }
 
-    /**************************************************************************************
-    *************   ValidationMessageFontSizeProperty *************************************
-    ***************************************************************************************/
+/// <summary>
+/// Font size of the Validation Message
+/// </summary>
 
     public static readonly BindableProperty ValidationMessageFontSizeProperty = BindableProperty.Create(
             nameof(ValidationMessageFontSize),
@@ -347,6 +364,13 @@ public class ValidatableEntry : Grid
         propertyChanged: OnValidationChangedCommandChanged
         );
     private Command<bool> _validationChangedCommand;
+    /// <summary>
+    /// Command that is executed when the state of the validation changes.
+    /// </summary>
+    /// <remarks>
+    /// Be sure to define a Command with one Bool parameter, so it can receive
+    /// the status of the validation. Otherwise, an exception will be thrown
+    /// </remarks>
     public Command<bool> ValidationChangedCommand
     {
         get => _validationChangedCommand;
@@ -366,10 +390,12 @@ public class ValidatableEntry : Grid
         {
             throw new InvalidCastException("This command needs to be of type Command<bool>", ex);
         }
-
-
-
     }
+
+    /// <summary>
+    /// A string containing all the characters allowed to be used in the Entry.
+    /// If left blank, it is ignored and all characters are allowed.
+    /// </summary>
     public string AllowedCharactersSet { 
         get => (string)GetValue(AllowedCharactersSetProperty);
         set => SetValue(AllowedCharactersSetProperty, value);
@@ -380,11 +406,9 @@ public class ValidatableEntry : Grid
         typeof(ValidatableEntry)
         );
     #endregion
-
-
-
-
-
+/// <summary>
+/// List of ValidationRules
+/// </summary>
     public List<IValidationRule> ValidationRules { get; set; } = new();
     private bool previousIsValidValue;
     private bool validateOnFocusLost = true;
@@ -402,8 +426,13 @@ public class ValidatableEntry : Grid
         }
         previousIsValidValue = isValid;
     }
-
+    /// <summary>
+    /// If true, the validations will be run after every character entered, changed or deleted
+    /// </summary>
     public bool ValidateOnTextChanged { get; set; } = false;
+    /// <summary>
+    /// If true, validations will be run every time the Entry looses focus
+    /// </summary>
     public bool ValidateOnFocusLost
     {
         get => validateOnFocusLost;
@@ -422,7 +451,11 @@ public class ValidatableEntry : Grid
     }
     public event EventHandler<bool> ValidationStateChanged;
 
-
+    /// <summary>
+    /// Causes validations to be run agains the contents of Entry
+    /// As soon as one validation fails, the corresponding message is loaded
+    /// into ValidationMessage and the method ends.
+    /// </summary>
     public void RunValidations()
     {
         IsNeverValidated = false;
@@ -503,7 +536,7 @@ public class ValidatableEntry : Grid
 
 
     }
-    public static void EvaluateFloatingPlaceholderColor(ValidatableEntry e)
+    static void EvaluateFloatingPlaceholderColor(ValidatableEntry e)
     {
         if (e?.FloatingPlaceholder == null)
             return;
