@@ -1,21 +1,10 @@
-
-using Microsoft.Maui.Controls;
-using System.ComponentModel;
-using System.Xml.Linq;
-using ValidatableEntry;
-
 namespace ValidatableEntry;
-/*
- TODO:
- Default Value + Default Value string template
- Expose Keyboard Property
- AllowOnlyNumeric Property
- */
+
 public class ValidatableEntry : Grid
 {
-    public Entry Entry { get; set; }
-    public Label FloatingPlaceholder { get; set; }
-    public Label ValidationMessageLabel { get; set; }
+    Entry Entry { get; set; }
+    Label FloatingPlaceholder { get; set; }
+    Label ValidationMessageLabel { get; set; }
 
     public bool IsNeverValidated { get; private set; } = true;
 
@@ -464,11 +453,6 @@ public class ValidatableEntry : Grid
             e(this, isValid);
         }
     }
-    private void OnEntryTextChanging(object sender, TextChangedEventArgs e)
-    {
-
-    }
-
     private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
     {
         if (!string.IsNullOrEmpty(AllowedCharactersSet))
