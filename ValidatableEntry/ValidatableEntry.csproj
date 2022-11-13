@@ -17,7 +17,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<Title>Validatable Entry</Title>
 		<AssemblyName>irazu.com.ar_$(MSBuildProjectName)</AssemblyName>
-		<Version>1.10.0</Version>
+		<Version>1.11.0</Version>
 		<Authors>Joaquin Garcia</Authors>
 		<Description>An Entry Control with built in validation features, including validation rules and messages. And a floating placeholder</Description>
 		<Copyright>2022</Copyright>
