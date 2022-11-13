@@ -97,6 +97,25 @@ The rule is satisfied if the input string is a valid Email address
 ### RegexRule ###
 This rule has the *RegexRuleStr* property. This string should be a valid Regex pattern, otherwise an exception will occur.
 The input string is matched against this rule, using the *IsMatch* method of *System.Text.ReularExpressions*. If the match is satisfied, the rule is satisfied.
+## Allowed Characters ##
+Often, it can be useful to limit the characters the user is allowed to enter to a limited set. The AlloweCharctersSet property allows just that. Simply enter into this string all the characters that should be allowed. If this string is empty, no restrction is applied.
+### Examples ###
+#### Allow only numeric characters ####
+```
+AllowedCharactersSet = "0123456789"
+```
+#### Allow only numeric characters with punctuation ####
+```
+AllowedCharactersSet = "0123456789.,"
+```
+#### Allow only lowercase letters ####
+```
+AllowedCharactersSet = "qwertyuiopasdfghjklzxcvbnm"
+```
+#### Allow everything ####
+```
+AllowedCharactersSet = ""
+```
 
 ## Properties ##
 ### Entry:Microsoft.Maui.Controls.Entry ###
