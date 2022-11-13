@@ -12,7 +12,7 @@
             Placeholder="URL"
             ValidationChangedCommand="{Binding URL_ValidationChangedCommand}"
             IsValid="{Binding IsURLValid, Mode=TwoWay}"
-            Text="{Binding URL, Mode=TwoWay}"
+            Text="{Binding URL}"
             >
             <cc:ValidatableEntry.ValidationRules>
                 <cc:IsValidUrlRule 
